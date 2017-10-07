@@ -1,30 +1,17 @@
 package com.tvz.matko.naps;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
-
-
-
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        //When button About is clicked, go to About activity
-        Button about = (Button) findViewById(R.id.buttonAbout);
-
-        about.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
-            }
-        });
+        setContentView(R.layout.activity_about);
     }
+
 
     // FUllscreen
     @Override
@@ -42,10 +29,4 @@ public class MainActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
-
-
-
-
-
-
 }
