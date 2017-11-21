@@ -7,7 +7,7 @@
     tools:context="com.tvz.matko.naps.PictureActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/pic"
         android:layout_width="225dp"
         android:layout_height="352dp"
         app:srcCompat="@drawable/animals_004_v"
@@ -37,7 +37,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button"

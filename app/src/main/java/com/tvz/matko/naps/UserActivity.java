@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,9 +48,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.lang.Object;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
+import android.content.Context;
+import android.provider.Settings.Secure;
+import android.content.Context;
+import android.telephony.TelephonyManager;
+import android.view.View;
+import android.content.Context;
 
 public class UserActivity extends AppCompatActivity {
-
 
 
     EditText name;
@@ -60,6 +69,7 @@ public class UserActivity extends AppCompatActivity {
     String TempName;
     Integer TempAge;
     Integer TempSex;
+
 
     // url to create new product
     private static String ServerURL = "http://lqovz8nye-site.etempurl.com/scripts/add_user.php";
@@ -127,6 +137,7 @@ public class UserActivity extends AppCompatActivity {
 
                 GetData();
 
+
                 //Checking network connection
                 if (!isNetworkAvailable()) {
                     Toast.makeText(UserActivity.this, R.string.no_connection, Toast.LENGTH_LONG).show();
@@ -168,6 +179,9 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
+
+
+
 //_________________________________________
 
     class Prijava extends AsyncTask<String, String, Void> {
@@ -187,6 +201,9 @@ public class UserActivity extends AppCompatActivity {
             NameValuePairs.add(new BasicNameValuePair("name", TempName));
             NameValuePairs.add(new BasicNameValuePair("age", TempAge.toString()));
             NameValuePairs.add(new BasicNameValuePair("sex", TempSex.toString()));
+            //NameValuePairs.add(new BasicNameValuePair("id_phone", deviceid));
+
+
 
             try {
 
