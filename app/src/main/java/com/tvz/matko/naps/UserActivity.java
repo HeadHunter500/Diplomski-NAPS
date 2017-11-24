@@ -71,11 +71,12 @@ public class UserActivity extends AppCompatActivity {
     Integer TempSex;
 
 
-    // url to create new product
+    // url to add new user
     private static String ServerURL = "http://lqovz8nye-site.etempurl.com/scripts/add_user.php";
 
     String line = null;
     int code;
+
 
 
     @Override
@@ -159,7 +160,8 @@ public class UserActivity extends AppCompatActivity {
                 } else {
                     //When button Start is clicked, go to Picture
 
-                  new Prijava().execute();
+                  new UserStart().execute();
+
 
                 }
 
@@ -184,7 +186,8 @@ public class UserActivity extends AppCompatActivity {
 
 //_________________________________________
 
-    class Prijava extends AsyncTask<String, String, Void> {
+    class UserStart extends AsyncTask<String, String, Void> {
+
 
         InputStream is = null;
         String result = "";
@@ -256,10 +259,18 @@ public class UserActivity extends AppCompatActivity {
                     Toast.makeText(UserActivity.this, json_data.getString("message") , Toast.LENGTH_LONG).show();
 
                 } else {
-                    Toast.makeText(UserActivity.this, json_data.getString("message"), Toast.LENGTH_LONG).show();
+
+                    int activePic = json_data.getInt("num");
+
+                    //Forwards number of active pictures to the PictureActivity and starts that activity
+
+                    Intent qq = new Intent(UserActivity.this,PictureActivity.class);
+                    qq.putExtra("activePic",activePic);
+                    startActivity(qq);
+
                     finish();
 
-                    startActivity(new Intent(UserActivity.this, PictureActivity.class));
+                    //startActivity(new Intent(UserActivity.this, PictureActivity.class));
 
                 }
 
@@ -274,6 +285,8 @@ public class UserActivity extends AppCompatActivity {
 
 
 //___________________________________________
+
+
 
     //Checks if the network adapter is enabled
     private boolean isNetworkAvailable() {
