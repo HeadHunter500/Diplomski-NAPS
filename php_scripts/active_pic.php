@@ -24,7 +24,9 @@ $response = array();
 		$response["message"] = "Active pictures succesfully fetched.";
 		
 		
-		while($row = mysql_fetch_assoc($result)) $response[] = $row;
+		while($row = mysql_fetch_assoc($result)){
+			$response[] = $row;			
+		} 
 		
 		echo json_encode($response);
 	}

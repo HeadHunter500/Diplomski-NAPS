@@ -1,13 +1,20 @@
 package com.tvz.matko.naps;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -28,9 +35,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import android.os.Handler;
 
 public class PictureActivity extends AppCompatActivity {
+
+    ConstraintLayout background;
+
+    RatingBar bar1, bar2;
 
     ImageView image;
 
@@ -39,11 +53,14 @@ public class PictureActivity extends AppCompatActivity {
     String line = null;
     int code;
 
-    String pictureURL = "";
 
+    List<String> pictures = new ArrayList<>();
 
+    int activePic;
 
-    // url to create new product
+    int counter = 1;
+
+    // url to create get all active pictures
     private static String ServerURL = "http://lqovz8nye-site.etempurl.com/scripts/active_pic.php";
 
     @Override
@@ -57,27 +74,70 @@ public class PictureActivity extends AppCompatActivity {
 
         next = (Button)findViewById(R.id.buttonNext);
 
+        background = (ConstraintLayout)findViewById(R.id.background);
+
+        bar1 = (RatingBar)findViewById(R.id.ratingBar1);
+        bar2 = (RatingBar)findViewById(R.id.ratingBar2);
 
 
-
-
-        Picasso.with(this).load("http://lqovz8nye-site.etempurl.com/images/Animals_002_v.jpg").into(image);
 
         //gets the number of active pictures from UserActivity into this one
         Intent intent = getIntent();
-        int activePic = intent.getExtras().getInt("activePic");
-
+        activePic = intent.getExtras().getInt("activePic");
 
         new ActivePictures().execute();
+
 
 
 
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                //Toast.makeText(PictureActivity.this, url, Toast.LENGTH_LONG).show();
+                //Toast.makeText(PictureActivity.this, dick, Toast.LENGTH_LONG).show();
 
-                Picasso.with(PictureActivity.this).load(pictureURL).into(image);
+                if(counter == activePic){
+                    Intent qq = new Intent(PictureActivity.this,EndActivity.class);
+                    startActivity(qq);
+                }
+
+                else {
+
+                    // set the color red first.
+                    //background.getBackground().setColorFilter(ContextCompat.getColor(PictureActivity.this, R.color.teal), PorterDuff.Mode.MULTIPLY);
+                    background.setBackgroundColor(getResources().getColor(R.color.teal));
+
+                    image.setVisibility(View.INVISIBLE);
+
+                    next.setVisibility(View.INVISIBLE);
+
+                    bar1.setVisibility(View.INVISIBLE);
+
+                    bar2.setVisibility(View.INVISIBLE);
+
+
+
+                    // change to original after 5 secs.
+                    new Handler().postDelayed(new Runnable() {
+
+                        public void run() {
+                            background.setBackgroundColor(getResources().getColor(R.color.blue));
+                            image.setVisibility(View.VISIBLE);
+
+                            next.setVisibility(View.VISIBLE);
+
+                            bar1.setVisibility(View.VISIBLE);
+
+                            bar2.setVisibility(View.VISIBLE);
+                        }
+                    }, 5000);
+
+
+
+                    Picasso.with(PictureActivity.this).load(pictures.get(counter)).into(image);
+
+                    counter++;
+                }
+
 
             }
         });
@@ -115,11 +175,16 @@ public class PictureActivity extends AppCompatActivity {
     class ActivePictures extends AsyncTask<String, String, Void> {
 
 
+
         InputStream is = null;
         String result = "";
 
+
+
+
         protected void onPreExecute() {
-        }
+
+       }
 
         @Override
         //Spajanje na skriptu koja se spaja na tablicu korisnika i izlistava ih
@@ -180,9 +245,21 @@ public class PictureActivity extends AppCompatActivity {
                 } else {
 
 
-                    //Uzeo url od slike ---proba
-                    pictureURL = json_data.getJSONObject("2").getString("url");
 
+                    //Uzeo url od slike ---proba
+                    //pictureURL = json_data.getJSONObject("2").getString("url");
+
+                    for(int i=0; i<activePic; i++){
+                        String x = Integer.toString(i);
+                        pictures.add(json_data.getJSONObject(x).getString("url"));
+
+                    }
+
+                    Picasso.with(PictureActivity.this).load(pictures.get(0)).into(image);
+
+                    //Toast.makeText(PictureActivity.this, dick, Toast.LENGTH_LONG).show();
+
+                    /*
                     ArrayList<String> pictures = new ArrayList<String>();
 
                     JSONArray Jarray = new JSONArray(result);
@@ -201,6 +278,8 @@ public class PictureActivity extends AppCompatActivity {
 
                         finish();
                     }
+
+                    */
                 }
 
 

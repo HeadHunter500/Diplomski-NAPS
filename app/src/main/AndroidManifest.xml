@@ -3,8 +3,8 @@
     package="com.tvz.matko.naps">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -22,9 +22,8 @@
         </activity>
         <activity android:name=".AboutActivity" />
         <activity android:name=".UserActivity" />
-        <activity android:name=".PictureActivity"></activity>
+        <activity android:name=".PictureActivity" />
+        <activity android:name=".EndActivity"></activity>
     </application>
-
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 </manifest>

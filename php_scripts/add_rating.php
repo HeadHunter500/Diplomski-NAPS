@@ -8,12 +8,12 @@
 $response = array();
  
 // check for required fields
-if (isset($_REQUEST['name']) && isset($_REQUEST['age']) && isset($_REQUEST['sex'])) {
+if (isset($_REQUEST['id_person']) && isset($_REQUEST['id_picture']) && isset($_REQUEST['valence'] && isset($_REQUEST['arousal'])) {
  
-    $name = $_REQUEST['name'];
-    $age = $_REQUEST['age'];
-    $sex = $_REQUEST['sex'];
-	$id_phone = $_REQUEST['id_phone'];
+    $id_person = $_REQUEST['id_person'];
+    $id_picture = $_REQUEST['id_picture'];
+    $valence = $_REQUEST['valence'];
+	$arousal = $_REQUEST['arousal'];
  
     // include db connect class
     require_once __DIR__ . '/db_connect.php';
@@ -22,24 +22,14 @@ if (isset($_REQUEST['name']) && isset($_REQUEST['age']) && isset($_REQUEST['sex'
     $db = new DB_CONNECT();
  
     // mysql inserting a new row
-    $result = mysql_query("INSERT INTO person(name, age, gender, id_phone, date) VALUES('$name', '$age', '$sex', '$id_phone', NOW())");
+    $result = mysql_query("INSERT INTO rating(id_person, id_picture, valence, arousal, date) VALUES('$id_person', '$id_picture ', '$valence', '$arousal', NOW())");
  
     // check if row inserted or not
     if ($result) {
         // successfully inserted into database
         $response["success"] = 1;
-        $response["message"] = "User successfully created.";
-		
-		    // mysql getting the number of active pictures
-			$result_sum = mysql_query("SELECT SUM(is_used) AS pic FROM picture");
-			$row = mysql_fetch_assoc($result_sum); 
-			$sum = $row['pic'];
-			
-			$response["num"] = $sum;
-				
-			   
-		
- 
+        $response["message"] = "Picture successfully rated.";
+	
         // echoing JSON response
         echo json_encode($response);
     } else {

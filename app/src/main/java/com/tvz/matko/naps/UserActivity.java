@@ -2,6 +2,7 @@ package com.tvz.matko.naps;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -188,11 +190,23 @@ public class UserActivity extends AppCompatActivity {
 
     class UserStart extends AsyncTask<String, String, Void> {
 
+        private ProgressDialog progressDialog = new ProgressDialog(UserActivity.this);
 
         InputStream is = null;
         String result = "";
 
         protected void onPreExecute() {
+
+            //Dijalog koji prikazuje učitavanje, odnosno prijavljivanje
+            //progressDialog.setMessage("Prijavljivanje...");
+            progressDialog.show();
+            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface arg0) {
+                    UserStart.this.cancel(true);
+                }
+            });
+
         }
 
         @Override
@@ -274,7 +288,7 @@ public class UserActivity extends AppCompatActivity {
 
                 }
 
-
+                this.progressDialog.dismiss();
 
             } catch (Exception e) {
 
