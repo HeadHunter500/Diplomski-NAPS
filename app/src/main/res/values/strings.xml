@@ -5,6 +5,8 @@
     <string name="button_start">Start</string>
     <string name="button_about">About</string>
 
+    <string name="button_next">Next</string>
+
 
     <string name="button_male">Male</string>
     <string name="button_female">Female</string>
@@ -15,6 +17,10 @@
     <string name="empty_age">Please enter age</string>
 
     <string name="empty_sex">Please enter gender</string>
+
+    <string name="empty_valence">Please enter valence</string>
+
+    <string name="empty_arousal">Please enter arousal</string>
 
 
     <string name="no_connection">Internet connection is needed</string>

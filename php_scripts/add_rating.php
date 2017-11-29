@@ -7,11 +7,8 @@
 // array for JSON response
 $response = array();
  
-// check for required fields
-if (isset($_REQUEST['id_person']) && isset($_REQUEST['id_picture']) && isset($_REQUEST['valence'] && isset($_REQUEST['arousal'])) {
  
-    $id_person = $_REQUEST['id_person'];
-    $id_picture = $_REQUEST['id_picture'];
+    $url = $_REQUEST['url'];
     $valence = $_REQUEST['valence'];
 	$arousal = $_REQUEST['arousal'];
  
@@ -20,6 +17,16 @@ if (isset($_REQUEST['id_person']) && isset($_REQUEST['id_picture']) && isset($_R
  
     // connecting to db
     $db = new DB_CONNECT();
+	
+	$result_id = mysql_query("SELECT id AS id_person FROM person ORDER BY date DESC LIMIT 1");
+			$row_id = mysql_fetch_assoc($result_id); 
+			$id_person = $row_id['id_person'];
+			
+	$result_pic = mysql_query("SELECT id AS id_picture FROM picture WHERE url = '$url'");
+			$row_pic = mysql_fetch_assoc($result_pic);
+			$id_picture = $row_pic['id_picture'];
+			
+			
  
     // mysql inserting a new row
     $result = mysql_query("INSERT INTO rating(id_person, id_picture, valence, arousal, date) VALUES('$id_person', '$id_picture ', '$valence', '$arousal', NOW())");
@@ -40,12 +47,4 @@ if (isset($_REQUEST['id_person']) && isset($_REQUEST['id_picture']) && isset($_R
         // echoing JSON response
         echo json_encode($response);
     }
-} else {
-    // required field is missing
-    $response["success"] = 0;
-    $response["message"] = "Required field(s) is missing";
- 
-    // echoing JSON response
-    echo json_encode($response);
-}
 ?>
