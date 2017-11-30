@@ -12,7 +12,6 @@
         android:id="@+id/pic"
         android:layout_width="225dp"
         android:layout_height="352dp"
-        app:srcCompat="@drawable/animals_004_v"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.529"

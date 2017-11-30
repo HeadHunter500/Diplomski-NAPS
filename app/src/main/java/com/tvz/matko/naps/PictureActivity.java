@@ -1,21 +1,20 @@
 package com.tvz.matko.naps;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,36 +28,31 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import android.os.Handler;
 
 public class PictureActivity extends AppCompatActivity {
 
     ConstraintLayout background;
 
-    //RatingBar valence, arousal;
+    ImageView image;
 
     Spinner valence, arousal;
 
-    Integer TempValence, TempArousal;
-
-    ImageView image;
+    ImageButton valenceMin, valenceMax, arousalMin, arousalMax;
 
     Button next;
 
+
+    Integer TempValence, TempArousal;
+
     String line = null;
     int code;
-
 
     List<String> pictures = new ArrayList<>();
 
@@ -76,15 +70,21 @@ public class PictureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_picture);
 
 
+        background = (ConstraintLayout)findViewById(R.id.background);
 
         image = (ImageView)findViewById(R.id.picture);
 
-        next = (Button)findViewById(R.id.buttonNext);
-
-        background = (ConstraintLayout)findViewById(R.id.background);
-
         valence = (Spinner)findViewById(R.id.spinnerValence);
         arousal = (Spinner)findViewById(R.id.spinnerArousal);
+
+        valenceMin = (ImageButton)findViewById(R.id.imageButtonValenceMin);
+        valenceMax = (ImageButton)findViewById(R.id.imageButtonValenceMax);
+
+        arousalMin = (ImageButton)findViewById(R.id.imageButtonArousalMin);
+        arousalMax = (ImageButton)findViewById(R.id.imageButtonArousalMax);
+
+        next = (Button)findViewById(R.id.buttonNext);
+
 
 
         //Populate spinner with numbers
@@ -133,9 +133,14 @@ public class PictureActivity extends AppCompatActivity {
 
                 GetData();
 
+                //Checking network connection
+                if (!isNetworkAvailable()) {
+                    Toast.makeText(PictureActivity.this, R.string.no_connection, Toast.LENGTH_LONG).show();
+
+                }
 
                 //Checking if Valence is entered
-                if (valence.getItemAtPosition(TempValence).toString().equals("Valence")) {
+                else if (valence.getItemAtPosition(TempValence).toString().equals("Valence")) {
                     Toast.makeText(PictureActivity.this, R.string.empty_valence, Toast.LENGTH_LONG).show();
                 }
 
@@ -156,19 +161,25 @@ public class PictureActivity extends AppCompatActivity {
 
                     new RatePicture().execute();
 
-                    //counter++;
-
                     // set the color teal first.
 
                     background.setBackgroundColor(getResources().getColor(R.color.teal));
 
                     image.setVisibility(View.INVISIBLE);
 
-                    next.setVisibility(View.INVISIBLE);
-
                     valence.setVisibility(View.INVISIBLE);
 
                     arousal.setVisibility(View.INVISIBLE);
+
+                    valenceMin.setVisibility(View.INVISIBLE);
+                    valenceMax.setVisibility(View.INVISIBLE);
+
+                    arousalMin.setVisibility(View.INVISIBLE);
+                    arousalMax.setVisibility(View.INVISIBLE);
+
+                    next.setVisibility(View.INVISIBLE);
+
+
 
 
 
@@ -179,9 +190,8 @@ public class PictureActivity extends AppCompatActivity {
 
                         public void run() {
                             background.setBackgroundColor(getResources().getColor(R.color.blue));
-                            image.setVisibility(View.VISIBLE);
 
-                            next.setVisibility(View.VISIBLE);
+                            image.setVisibility(View.VISIBLE);
 
                             valence.setSelection(0);
 
@@ -191,22 +201,16 @@ public class PictureActivity extends AppCompatActivity {
 
                             arousal.setVisibility(View.VISIBLE);
 
+                            valenceMin.setVisibility(View.VISIBLE);
+                            valenceMax.setVisibility(View.VISIBLE);
 
-/*
+                            arousalMin.setVisibility(View.VISIBLE);
+                            arousalMax.setVisibility(View.VISIBLE);
 
-                            Toast.makeText(PictureActivity.this,
-                                    "valence= "+String.valueOf(valence.getRating())+"\n" +
-                                            "arousal= "+String.valueOf(arousal.getRating()),
-                                    Toast.LENGTH_SHORT).show();
-*/
+                            next.setVisibility(View.VISIBLE);
+
                         }
                     }, 5000);
-
-
-
-
-
-                    //Picasso.with(PictureActivity.this).load(pictures.get(counter)).into(image);
 
 
                 }
@@ -216,8 +220,6 @@ public class PictureActivity extends AppCompatActivity {
         });
 
 
-
-        //System.out.println(Arrays.toString(pictures.toArray()));
     }
 
 
@@ -479,4 +481,12 @@ public class PictureActivity extends AppCompatActivity {
 
 
     //_____________________
+
+
+    //Checks if the network adapter is enabled
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }

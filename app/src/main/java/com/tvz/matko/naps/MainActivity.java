@@ -1,16 +1,18 @@
 package com.tvz.matko.naps;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
-
 
 
     @Override
@@ -41,6 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
         start.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+
+                //Checking network connection
+                if (!isNetworkAvailable()) {
+                    Toast.makeText(MainActivity.this, R.string.no_connection, Toast.LENGTH_LONG).show();
+
+                }
+
                 startActivity(new Intent(MainActivity.this, UserActivity.class));
             }
         });
@@ -67,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
     */
 
+    //Checks if the network adapter is enabled
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
 

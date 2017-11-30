@@ -11,16 +11,20 @@
     <string name="button_male">Male</string>
     <string name="button_female">Female</string>
 
+    <string name="button_exit">Exit</string>
+
+
     <string name="text_name">Name</string>
     <string name="empty_name">Please enter name</string>
-
     <string name="empty_age">Please enter age</string>
-
     <string name="empty_sex">Please enter gender</string>
 
     <string name="empty_valence">Please enter valence</string>
-
     <string name="empty_arousal">Please enter arousal</string>
+
+
+    <string name="end">Congratulations</string>
+
 
 
     <string name="no_connection">Internet connection is needed</string>
