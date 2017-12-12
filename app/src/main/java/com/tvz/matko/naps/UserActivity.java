@@ -174,7 +174,7 @@ public class UserActivity extends AppCompatActivity {
         protected void onPreExecute() {
 
             //Dijalog koji prikazuje učitavanje, odnosno prijavljivanje
-            //progressDialog.setMessage("Prijavljivanje...");
+            progressDialog.setMessage("Please wait...");
             progressDialog.show();
             progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override

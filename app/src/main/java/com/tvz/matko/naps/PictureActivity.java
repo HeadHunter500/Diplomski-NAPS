@@ -11,6 +11,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -40,7 +42,7 @@ public class PictureActivity extends AppCompatActivity {
 
     ConstraintLayout background;
 
-    ImageView image;
+    ImageView image, loading;
 
     Spinner valence, arousal;
 
@@ -55,8 +57,18 @@ public class PictureActivity extends AppCompatActivity {
     int code;
 
     List<String> pictures = new ArrayList<>();
+/*
+    List<String> pic_description = new ArrayList<>();
+    List<String> pic_valence = new ArrayList<>();
+    List<String> pic_arousal = new ArrayList<>();
+    */
 
     int activePic;
+
+    /*
+    List<String> user_valence = new ArrayList<>();
+    List<String> user_arousal = new ArrayList<>();
+    */
 
     int counter = 0;
 
@@ -67,12 +79,16 @@ public class PictureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_picture);
+
+
 
 
         background = (ConstraintLayout)findViewById(R.id.background);
 
         image = (ImageView)findViewById(R.id.picture);
+        loading = (ImageView)findViewById(R.id.imageViewLoading);
 
         valence = (Spinner)findViewById(R.id.spinnerValence);
         arousal = (Spinner)findViewById(R.id.spinnerArousal);
@@ -112,9 +128,6 @@ public class PictureActivity extends AppCompatActivity {
         //adding years to age spinner
         arousal.setAdapter(spinnerArrayAdapterArousal);
 
-        //valence = (RatingBar)findViewById(R.id.ratingBarValence);
-        //arousal = (RatingBar)findViewById(R.id.ratingBarArousal);
-
 
 
 
@@ -153,8 +166,45 @@ public class PictureActivity extends AppCompatActivity {
 
                     new RatePicture().execute();
 
-                    Intent qq = new Intent(PictureActivity.this,EndActivity.class);
-                    startActivity(qq);
+                    //from list to string[] so it can be passed to EndActivity
+                    /*
+                    String[] temp_pic_description = new String[activePic];
+                    String[] temp_pic_valence = new String[activePic];
+                    String[] temp_pic_arousal = new String[activePic];
+
+                    String[] temp_user_valence = new String[activePic];
+                    String[] temp_user_arousal = new String[activePic];
+
+                    for(int i=0; i<activePic; i++){
+                        temp_pic_description[i] = pic_description.get(i);
+                        temp_pic_valence[i] = pic_valence.get(i);
+                        temp_pic_arousal[i] = pic_arousal.get(i);
+
+                        temp_user_valence[i] = user_valence.get(i);
+                        temp_user_arousal[i] = user_arousal.get(i);
+                    }
+                    */
+
+
+                    //Intent qq = new Intent(PictureActivity.this,EndActivity.class);
+
+
+                    /*
+                    qq.putExtra("pic_description",temp_pic_description);
+                    qq.putExtra("pic_valence",temp_pic_valence);
+                    qq.putExtra("pic_arousal",temp_pic_arousal);
+
+                    qq.putExtra("user_valence",temp_user_valence);
+                    qq.putExtra("user_arousal",temp_user_arousal);
+
+                    qq.putExtra("activePic",activePic);
+                    */
+
+                    //startActivity(qq);
+
+                    Toast.makeText(PictureActivity.this, R.string.thanks, Toast.LENGTH_LONG).show();
+
+                    finish();
                 }
 
                 else {
@@ -166,6 +216,7 @@ public class PictureActivity extends AppCompatActivity {
                     background.setBackgroundColor(getResources().getColor(R.color.teal));
 
                     image.setVisibility(View.INVISIBLE);
+                    loading.setVisibility(View.INVISIBLE);
 
                     valence.setVisibility(View.INVISIBLE);
 
@@ -183,8 +234,6 @@ public class PictureActivity extends AppCompatActivity {
 
 
 
-
-
                     // change to original after 5 secs.
                     new Handler().postDelayed(new Runnable() {
 
@@ -192,6 +241,7 @@ public class PictureActivity extends AppCompatActivity {
                             background.setBackgroundColor(getResources().getColor(R.color.blue));
 
                             image.setVisibility(View.VISIBLE);
+                            loading.setVisibility(View.VISIBLE);
 
                             valence.setSelection(0);
 
@@ -231,7 +281,7 @@ public class PictureActivity extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
 
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
+
             decorView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -239,7 +289,7 @@ public class PictureActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
+
     }
 
 
@@ -329,6 +379,11 @@ public class PictureActivity extends AppCompatActivity {
                     for(int i=0; i<activePic; i++){
                         String x = Integer.toString(i);
                         pictures.add(json_data.getJSONObject(x).getString("url"));
+                        /*
+                        pic_description.add(json_data.getJSONObject(x).getString("description"));
+                        pic_valence.add(json_data.getJSONObject(x).getString("valence"));
+                        pic_arousal.add(json_data.getJSONObject(x).getString("arousal"));
+                        */
 
                     }
 
@@ -400,7 +455,7 @@ public class PictureActivity extends AppCompatActivity {
         }
 
         @Override
-        //Spajanje na skriptu koja se spaja na tablicu korisnika i izlistava ih
+        //rejta se
         protected Void doInBackground(String... params) {
 
             ArrayList<NameValuePair> NameValuePairs = new ArrayList<NameValuePair>();
@@ -410,7 +465,10 @@ public class PictureActivity extends AppCompatActivity {
             NameValuePairs.add(new BasicNameValuePair("arousal", TempArousal.toString()));
             //NameValuePairs.add(new BasicNameValuePair("id_phone", deviceid));
 
-
+            /*
+            user_valence.add(TempValence.toString());
+            user_arousal.add(TempArousal.toString());
+            */
 
             try {
 
@@ -481,6 +539,31 @@ public class PictureActivity extends AppCompatActivity {
 
 
     //_____________________
+
+
+
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, R.string.exit, Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
+
+
 
 
     //Checks if the network adapter is enabled
