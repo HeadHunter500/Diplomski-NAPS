@@ -1,7 +1,7 @@
 <?php
  
 /*
- * Following code will create a new user row
+ * Following code will create a new rate row
 */
  
 // array for JSON response

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">NAPS Tester</string>
 
+    <string name="app_name_full">The Nencki Affective Picture System</string>
+
     MainActivity
     <string name="button_start">Start</string>
     <string name="button_about">About</string>
