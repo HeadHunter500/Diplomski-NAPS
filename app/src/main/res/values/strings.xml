@@ -24,23 +24,20 @@
     <string name="empty_arousal">Please enter arousal</string>
 
 
+    End Activity
     <string name="results">Results</string>
 
     <string name="button_finish">Finish</string>
 
 
-    <string name="thanks">Thank you for participating</string>
-
-    <string name="exit">Please click BACK again to exit</string>
-
-    <string name="no_connection">Internet connection is needed</string>
 
 
-    <string name="instruction">How to rate a picture</string>
-    <string name="button_instruction">How to use this app</string>
+
 
 
     About Section
+
+
 
     <string name="development">
         Development\n\n
@@ -66,6 +63,33 @@
         a.marchewka@nencki.gov.pl\n\n\n
         2017.
     </string>
+
+
+    Instruction Section
+
+    <string name="how_to">How to use this app</string>
+
+
+
+    <string name="instruction">NAPS (The Nencki Affective Picture System) Tester is an application made for academic purposes using the NAPS database.\n\n
+        Database cointains pictures and user of this app rates them by emotion he gets from looking at them.\n\n User provides his name, age and gender and starts the sequence which contains pictures he will be responding to.\n\n
+        Between two pictures there is a screen in Teal color in duration of 5 seconds so that the user can clear his mind before seeing the next picture.\n\n
+        Picture is rated by choosing Valence and Arousal.
+    </string>
+
+    <string name="instruction_valence">Valence represents the emotion. Scale goes from 1 (Sad) to 9 (Happy)</string>
+
+    <string name="instruction_arousal">Arousal represents the intensity of that emotion. Scale goes from 1 (Low) to 9 (High)</string>
+
+
+
+
+-------------------------------------------------------------------------------
+    <string name="thanks">Thank you for participating</string>
+
+    <string name="exit">Please click BACK again to exit</string>
+
+    <string name="no_connection">Internet connection is needed</string>
 
 
 </resources>

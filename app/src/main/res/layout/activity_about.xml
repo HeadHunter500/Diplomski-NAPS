@@ -62,7 +62,7 @@
         android:id="@+id/buttonHowTo"
         android:layout_width="164dp"
         android:layout_height="48dp"
-        android:text="@string/button_instruction"
+        android:text="@string/how_to"
         android:textColor="@color/white"
         android:background="@drawable/round_button"
         android:gravity="center"
