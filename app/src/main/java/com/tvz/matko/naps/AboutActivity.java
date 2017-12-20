@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
+
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -30,7 +30,7 @@ public class AboutActivity extends AppCompatActivity {
 
 
                 startActivity(new Intent(AboutActivity.this, InstructionActivity.class));
-                //finish();
+
             }
         });
 
@@ -39,22 +39,4 @@ public class AboutActivity extends AppCompatActivity {
     }
 
 
-    // FUllscreen
-    /*
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        View decorView = getWindow().getDecorView();
-
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            decorView.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-    }
-    */
 }

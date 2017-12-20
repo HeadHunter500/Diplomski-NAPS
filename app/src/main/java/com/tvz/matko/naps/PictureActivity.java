@@ -11,8 +11,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -57,23 +55,14 @@ public class PictureActivity extends AppCompatActivity {
     int code;
 
     List<String> pictures = new ArrayList<>();
-/*
-    List<String> pic_description = new ArrayList<>();
-    List<String> pic_valence = new ArrayList<>();
-    List<String> pic_arousal = new ArrayList<>();
-    */
 
     int activePic;
-
-    /*
-    List<String> user_valence = new ArrayList<>();
-    List<String> user_arousal = new ArrayList<>();
-    */
 
     int counter = 0;
 
     // url to create get all active pictures
     private static String ServerGetPictures = "http://lqovz8nye-site.etempurl.com/scripts/active_pic.php";
+    //url to write the rating for each picture into the database
     private static String ServerRating = "http://lqovz8nye-site.etempurl.com/scripts/add_rating.php";
 
     @Override
@@ -81,8 +70,6 @@ public class PictureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_picture);
-
-
 
 
         background = (ConstraintLayout)findViewById(R.id.background);
@@ -112,7 +99,7 @@ public class PictureActivity extends AppCompatActivity {
 
         ArrayAdapter<Integer> spinnerArrayAdapterValence = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, rateValence);
         spinnerArrayAdapterValence.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //adding years to age spinner
+        //adding numbers to valence spinner
         valence.setAdapter(spinnerArrayAdapterValence);
 
 
@@ -125,7 +112,7 @@ public class PictureActivity extends AppCompatActivity {
 
         ArrayAdapter<Integer> spinnerArrayAdapterArousal = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, rateArousal);
         spinnerArrayAdapterArousal.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //adding years to age spinner
+        //adding numbers to arousal spinner
         arousal.setAdapter(spinnerArrayAdapterArousal);
 
 
@@ -166,42 +153,6 @@ public class PictureActivity extends AppCompatActivity {
 
                     new RatePicture().execute();
 
-                    //from list to string[] so it can be passed to EndActivity
-                    /*
-                    String[] temp_pic_description = new String[activePic];
-                    String[] temp_pic_valence = new String[activePic];
-                    String[] temp_pic_arousal = new String[activePic];
-
-                    String[] temp_user_valence = new String[activePic];
-                    String[] temp_user_arousal = new String[activePic];
-
-                    for(int i=0; i<activePic; i++){
-                        temp_pic_description[i] = pic_description.get(i);
-                        temp_pic_valence[i] = pic_valence.get(i);
-                        temp_pic_arousal[i] = pic_arousal.get(i);
-
-                        temp_user_valence[i] = user_valence.get(i);
-                        temp_user_arousal[i] = user_arousal.get(i);
-                    }
-                    */
-
-
-                    //Intent qq = new Intent(PictureActivity.this,EndActivity.class);
-
-
-                    /*
-                    qq.putExtra("pic_description",temp_pic_description);
-                    qq.putExtra("pic_valence",temp_pic_valence);
-                    qq.putExtra("pic_arousal",temp_pic_arousal);
-
-                    qq.putExtra("user_valence",temp_user_valence);
-                    qq.putExtra("user_arousal",temp_user_arousal);
-
-                    qq.putExtra("activePic",activePic);
-                    */
-
-                    //startActivity(qq);
-
                     Toast.makeText(PictureActivity.this, R.string.thanks, Toast.LENGTH_LONG).show();
 
                     finish();
@@ -211,7 +162,7 @@ public class PictureActivity extends AppCompatActivity {
 
                     new RatePicture().execute();
 
-                    // set the color teal first.
+                    // set the color teal first and hide all elements on the screen
 
                     background.setBackgroundColor(getResources().getColor(R.color.teal));
 
@@ -234,7 +185,7 @@ public class PictureActivity extends AppCompatActivity {
 
 
 
-                    // change to original after 5 secs.
+                    // change to original after 5 secs and make all elements visible again
                     new Handler().postDelayed(new Runnable() {
 
                         public void run() {
@@ -275,7 +226,6 @@ public class PictureActivity extends AppCompatActivity {
 
 
     //Fullscreen
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         View decorView = getWindow().getDecorView();
@@ -296,13 +246,12 @@ public class PictureActivity extends AppCompatActivity {
     public void GetData(){
 
        TempValence = valence.getSelectedItemPosition();
-
-        TempArousal = arousal.getSelectedItemPosition();
+       TempArousal = arousal.getSelectedItemPosition();
 
     }
 
 
-    //_____________
+
 
 
     class ActivePictures extends AsyncTask<String, String, Void> {
@@ -314,7 +263,7 @@ public class PictureActivity extends AppCompatActivity {
        }
 
         @Override
-        //Spajanje na skriptu koja se spaja na tablicu korisnika i izlistava ih
+
         protected Void doInBackground(String... params) {
 
 
@@ -322,19 +271,18 @@ public class PictureActivity extends AppCompatActivity {
 
             try {
 
-                //Spajanje na server gdje se nalazi skripta koja unosi korisnika u bazu podataka
+                //Connecting to the server where the php script is and gets all the active pictures so they can be displayed
                 HttpClient httpclient = new DefaultHttpClient();
                 HttpPost httppost = new HttpPost(ServerGetPictures);
-                //httppost.setEntity(new UrlEncodedFormEntity(NameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
                 is = entity.getContent();
-                Log.e("pass 1", "konekcija uspješna ");
+                Log.e("pass 1", "connection successful");
 
             } catch (Exception e) {
 
                 Log.e("Fail 1", e.toString());
-                Toast.makeText(getApplicationContext(), "Pogrešna IP Adresa",
+                Toast.makeText(getApplicationContext(), "Wrong IP address",
                         Toast.LENGTH_LONG).show();
 
             }
@@ -346,7 +294,7 @@ public class PictureActivity extends AppCompatActivity {
                 }
                 is.close();
                 result = sb.toString();
-                Log.e("pass 2", "konekcija uspješna ");
+                Log.e("pass 2", "connection successful");
 
             } catch (Exception e) {
 
@@ -361,8 +309,8 @@ public class PictureActivity extends AppCompatActivity {
 
 
             try {
-                //Skripta je ubacila korisnika u bazu podataka
-                //vraća se pomoću JSON-a rezultat 1 ako je sve prošlo ok ili 0 ako je registracija bila neuspješna
+                //Script is getting the active pictures from the database
+                //JSON result is retrieved - 1 if everything is ok - 0 if something went wrong
                 JSONObject json_data = new JSONObject(result);
                 code = (json_data.getInt("success"));
 
@@ -372,47 +320,16 @@ public class PictureActivity extends AppCompatActivity {
                 } else {
 
 
-
-                    //Uzeo url od slike ---proba
-                    //pictureURL = json_data.getJSONObject("2").getString("url");
-
                     for(int i=0; i<activePic; i++){
                         String x = Integer.toString(i);
                         pictures.add(json_data.getJSONObject(x).getString("url"));
-                        /*
-                        pic_description.add(json_data.getJSONObject(x).getString("description"));
-                        pic_valence.add(json_data.getJSONObject(x).getString("valence"));
-                        pic_arousal.add(json_data.getJSONObject(x).getString("arousal"));
-                        */
+
 
                     }
 
+                    //Displaying the picture from the database into the ImageView element on the app screen
                     Picasso.with(PictureActivity.this).load(pictures.get(counter)).into(image);
 
-
-                    //Toast.makeText(PictureActivity.this, dick, Toast.LENGTH_LONG).show();
-
-                    /*
-                    ArrayList<String> pictures = new ArrayList<String>();
-
-                    JSONArray Jarray = new JSONArray(result);
-                    //Pomoću for petlje se prolazi kroz sve uplate
-                    for (int i = 0; i < Jarray.length(); i++) {
-
-
-                        JSONObject Jasonobject = null;
-
-                        Jasonobject = Jarray.getJSONObject(i);
-
-                        String id = Jasonobject.getString("id");
-                        String url = Jasonobject.getString("url");
-                        //pictures.add(id.toString());
-                        //pictures.add(url.toString());
-
-                        finish();
-                    }
-
-                    */
                 }
 
 
@@ -425,37 +342,21 @@ public class PictureActivity extends AppCompatActivity {
     }
 
 
-//_____________
 
-
-
-    //______________________
 
 
     class RatePicture extends AsyncTask<String, String, Void> {
 
-        //private ProgressDialog progressDialog = new ProgressDialog(UserActivity.this);
+
 
         InputStream is = null;
         String result = "";
 
         protected void onPreExecute() {
-/*
-            //Dijalog koji prikazuje učitavanje, odnosno prijavljivanje
-            //progressDialog.setMessage("Prijavljivanje...");
-            progressDialog.show();
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface arg0) {
-                    UserActivity.UserStart.this.cancel(true);
-
-                }
-            });
-*/
         }
 
         @Override
-        //rejta se
+        //Rating of the picture
         protected Void doInBackground(String... params) {
 
             ArrayList<NameValuePair> NameValuePairs = new ArrayList<NameValuePair>();
@@ -463,28 +364,23 @@ public class PictureActivity extends AppCompatActivity {
             NameValuePairs.add(new BasicNameValuePair("url", pictures.get(counter)));
             NameValuePairs.add(new BasicNameValuePair("valence", TempValence.toString()));
             NameValuePairs.add(new BasicNameValuePair("arousal", TempArousal.toString()));
-            //NameValuePairs.add(new BasicNameValuePair("id_phone", deviceid));
 
-            /*
-            user_valence.add(TempValence.toString());
-            user_arousal.add(TempArousal.toString());
-            */
 
             try {
 
-                //Spajanje na server gdje se nalazi skripta koja unosi korisnika u bazu podataka
+                //Connecting to the server where the php script is which adds the rating for each picture into the database
                 HttpClient httpclient = new DefaultHttpClient();
                 HttpPost httppost = new HttpPost(ServerRating);
                 httppost.setEntity(new UrlEncodedFormEntity(NameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
                 is = entity.getContent();
-                Log.e("pass 1", "konekcija uspješna ");
+                Log.e("pass 1", "connection successful");
 
             } catch (Exception e) {
 
                 Log.e("Fail 1", e.toString());
-                Toast.makeText(getApplicationContext(), "Pogrešna IP Adresa",
+                Toast.makeText(getApplicationContext(), "Wrong IP address",
                         Toast.LENGTH_LONG).show();
 
             }
@@ -496,7 +392,7 @@ public class PictureActivity extends AppCompatActivity {
                 }
                 is.close();
                 result = sb.toString();
-                Log.e("pass 2", "konekcija uspješna ");
+                Log.e("pass 2", "connection successful");
 
             } catch (Exception e) {
 
@@ -511,8 +407,8 @@ public class PictureActivity extends AppCompatActivity {
 
 
             try {
-                //Skripta je ubacila korisnika u bazu podataka
-                //vraća se pomoću JSON-a rezultat 1 ako je sve prošlo ok ili 0 ako je registracija bila neuspješna
+                //Script has added the new rate for a picture into the database
+                //JSON result is retrieved - 1 if everything is ok - 0 if something went wrong
                 JSONObject json_data = new JSONObject(result);
                 code = (json_data.getInt("success"));
 
@@ -526,7 +422,6 @@ public class PictureActivity extends AppCompatActivity {
                     Picasso.with(PictureActivity.this).load(pictures.get(counter)).into(image);
                 }
 
-                //this.progressDialog.dismiss();
 
             } catch (Exception e) {
 
@@ -538,10 +433,9 @@ public class PictureActivity extends AppCompatActivity {
 
 
 
-    //_____________________
 
 
-
+    //Press twice the back button to exit
     boolean doubleBackToExitPressedOnce = false;
 
     @Override

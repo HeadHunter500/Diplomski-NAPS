@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //When button About is clicked, go to About activity
+        //When button Start is clicked, go to User activity
         Button start = (Button) findViewById(R.id.buttonStart);
 
         start.setOnClickListener(new View.OnClickListener(){
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 startActivity(new Intent(MainActivity.this, UserActivity.class));
-                //finish();
+
             }
         });
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    //Press twice the back button to exit
     boolean doubleBackToExitPressedOnce = false;
 
     @Override

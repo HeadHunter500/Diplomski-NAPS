@@ -49,7 +49,7 @@ public class UserActivity extends AppCompatActivity {
     Integer TempSex;
 
 
-    // url to add new user
+    // Url to php script which adds new user to the database
     private static String ServerURL = "http://lqovz8nye-site.etempurl.com/scripts/add_user.php";
 
     String line = null;
@@ -101,7 +101,7 @@ public class UserActivity extends AppCompatActivity {
 
         ArrayAdapter<Integer> spinnerGenderAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, sexList);
         spinnerGenderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //adding years to age spinner
+        //adding genders to gender spinner
         sex.setAdapter(spinnerGenderAdapter);
 
 
@@ -132,12 +132,13 @@ public class UserActivity extends AppCompatActivity {
                     Toast.makeText(UserActivity.this, R.string.empty_age, Toast.LENGTH_LONG).show();
                 }
 
-                //Checking if Age is entered
+                //Checking if Gender is entered
                 else if (sex.getItemAtPosition(TempSex).toString().equals("Gender")) {
                     Toast.makeText(UserActivity.this, R.string.empty_sex, Toast.LENGTH_LONG).show();
                 } else {
-                    //When button Start is clicked, go to Picture
 
+                  //If all the data has been provided by the user, then start adding them into the database and get the picture sequence and
+                  //start the next activity
                   new UserStart().execute();
 
 
@@ -162,7 +163,7 @@ public class UserActivity extends AppCompatActivity {
 
 
 
-//_________________________________________
+
 
     class UserStart extends AsyncTask<String, String, Void> {
 
@@ -173,7 +174,7 @@ public class UserActivity extends AppCompatActivity {
 
         protected void onPreExecute() {
 
-            //Dijalog koji prikazuje učitavanje, odnosno prijavljivanje
+            //Dialog which shows loading before picture sequence starts
             progressDialog.setMessage("Please wait...");
             progressDialog.show();
             progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -186,7 +187,6 @@ public class UserActivity extends AppCompatActivity {
         }
 
         @Override
-        //Spajanje na skriptu koja se spaja na tablicu korisnika i izlistava ih
         protected Void doInBackground(String... params) {
 
             ArrayList<NameValuePair> NameValuePairs = new ArrayList<NameValuePair>();
@@ -194,25 +194,25 @@ public class UserActivity extends AppCompatActivity {
             NameValuePairs.add(new BasicNameValuePair("name", TempName));
             NameValuePairs.add(new BasicNameValuePair("age", TempAge.toString()));
             NameValuePairs.add(new BasicNameValuePair("sex", TempSex.toString()));
-            //NameValuePairs.add(new BasicNameValuePair("id_phone", deviceid));
+
 
 
 
             try {
 
-                //Spajanje na server gdje se nalazi skripta koja unosi korisnika u bazu podataka
+                //Connecting to the server where the php script is which adds new user to the database
                 HttpClient httpclient = new DefaultHttpClient();
                 HttpPost httppost = new HttpPost(ServerURL);
                 httppost.setEntity(new UrlEncodedFormEntity(NameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
                 is = entity.getContent();
-                Log.e("pass 1", "konekcija uspješna ");
+                Log.e("pass 1", "connection successful");
 
             } catch (Exception e) {
 
                 Log.e("Fail 1", e.toString());
-                Toast.makeText(getApplicationContext(), "Pogrešna IP Adresa",
+                Toast.makeText(getApplicationContext(), "Wrong IP address",
                         Toast.LENGTH_LONG).show();
 
             }
@@ -224,7 +224,7 @@ public class UserActivity extends AppCompatActivity {
                 }
                 is.close();
                 result = sb.toString();
-                Log.e("pass 2", "konekcija uspješna ");
+                Log.e("pass 2", "connection successful");
 
             } catch (Exception e) {
 
@@ -239,8 +239,8 @@ public class UserActivity extends AppCompatActivity {
 
 
             try {
-                //Skripta je ubacila korisnika u bazu podataka
-                //vraća se pomoću JSON-a rezultat 1 ako je sve prošlo ok ili 0 ako je registracija bila neuspješna
+                //Script has added the new user into the database
+                //JSON result is retrieved - 1 if everything is ok - 0 if something went wrong
                 JSONObject json_data = new JSONObject(result);
                 code = (json_data.getInt("success"));
 
@@ -253,14 +253,12 @@ public class UserActivity extends AppCompatActivity {
                     int activePic = json_data.getInt("num");
 
                     //Forwards number of active pictures to the PictureActivity and starts that activity
-
                     Intent qq = new Intent(UserActivity.this,PictureActivity.class);
                     qq.putExtra("activePic",activePic);
                     startActivity(qq);
 
                     finish();
 
-                    //startActivity(new Intent(UserActivity.this, PictureActivity.class));
 
                 }
 
@@ -274,7 +272,6 @@ public class UserActivity extends AppCompatActivity {
     }
 
 
-//___________________________________________
 
 
 
