@@ -1,4 +1,4 @@
-#Tue Nov 21 21:01:53 CET 2017
+#Wed Dec 20 21:26:03 CET 2017
 file.2=C\:\\Users\\Matko\\Desktop\\NAPS\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\2\\picasso-2.5.2_16b9172a7d83993c2f13e769b29b9347cb9f1af9\\classes.dex
 base.2=C\:\\Users\\Matko\\Desktop\\NAPS\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\2\\picasso-2.5.2_16b9172a7d83993c2f13e769b29b9347cb9f1af9
 file.1=C\:\\Users\\Matko\\Desktop\\NAPS\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\classes_310aa10e54eea67b6249553ad76d01660f7c3127\\classes.dex

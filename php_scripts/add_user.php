@@ -13,16 +13,18 @@ if (isset($_REQUEST['name']) && isset($_REQUEST['age']) && isset($_REQUEST['sex'
     $name = $_REQUEST['name'];
     $age = $_REQUEST['age'];
     $sex = $_REQUEST['sex'];
-	$id_phone = $_REQUEST['id_phone'];
+	
  
     // include db connect class
     require_once __DIR__ . '/db_connect.php';
  
     // connecting to db
     $db = new DB_CONNECT();
+	
+	$con = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_DATABASE) or die(mysqli_error());
  
     // mysql inserting a new row
-    $result = mysql_query("INSERT INTO person(name, age, gender, id_phone, date) VALUES('$name', '$age', '$sex', '$id_phone', NOW())");
+    $result = mysqli_query($con,"INSERT INTO person(name, age, gender, date) VALUES('$name', '$age', '$sex', NOW())");
  
     // check if row inserted or not
     if ($result) {
@@ -31,8 +33,8 @@ if (isset($_REQUEST['name']) && isset($_REQUEST['age']) && isset($_REQUEST['sex'
         $response["message"] = "User successfully created.";
 		
 		    // mysql getting the number of active pictures
-			$result_sum = mysql_query("SELECT SUM(is_used) AS pic FROM picture");
-			$row = mysql_fetch_assoc($result_sum); 
+			$result_sum = mysqli_query($con,"SELECT SUM(is_used) AS pic FROM picture");
+			$row = mysqli_fetch_assoc($result_sum); 
 			$sum = $row['pic'];
 			
 			$response["num"] = $sum;

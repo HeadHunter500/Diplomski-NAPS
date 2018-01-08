@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -16,12 +18,15 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -29,11 +34,30 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.*;
+
+import android.provider.Settings.Secure;
+import android.content.Context;
+import android.telephony.TelephonyManager;
+import android.view.View;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.lang.Object;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
+import android.content.Context;
+import android.provider.Settings.Secure;
+import android.content.Context;
+import android.telephony.TelephonyManager;
+import android.view.View;
+import android.content.Context;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -50,7 +74,7 @@ public class UserActivity extends AppCompatActivity {
 
 
     // Url to php script which adds new user to the database
-    private static String ServerURL = "http://lqovz8nye-site.etempurl.com/scripts/add_user.php";
+    private static String ServerURL = "http://52.234.151.31/naps/scripts/add_user.php";
 
     String line = null;
     int code;

@@ -61,9 +61,9 @@ public class PictureActivity extends AppCompatActivity {
     int counter = 0;
 
     // url to create get all active pictures
-    private static String ServerGetPictures = "http://lqovz8nye-site.etempurl.com/scripts/active_pic.php";
+    private static String ServerGetPictures = "http://52.234.151.31/naps/scripts/active_pic.php";
     //url to write the rating for each picture into the database
-    private static String ServerRating = "http://lqovz8nye-site.etempurl.com/scripts/add_rating.php";
+    private static String ServerRating = "http://52.234.151.31/naps/scripts/add_rating.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,9 +180,6 @@ public class PictureActivity extends AppCompatActivity {
                     arousalMax.setVisibility(View.INVISIBLE);
 
                     next.setVisibility(View.INVISIBLE);
-
-
-
 
 
                     // change to original after 5 secs and make all elements visible again

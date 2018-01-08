@@ -13,9 +13,12 @@ $response = array();
  
     // connecting to db
     $db = new DB_CONNECT();
+	
+	$con = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_DATABASE) or die(mysqli_error());
+		
  
     // mysql getting the number of active pictures
-    $result = mysql_query("SELECT * FROM picture WHERE is_used = 1 ORDER BY name ASC");
+    $result = mysqli_query($con,"SELECT * FROM picture WHERE is_used = 1 ORDER BY name ASC");
 	 
 	
 	
@@ -24,7 +27,7 @@ $response = array();
 		$response["message"] = "Active pictures succesfully fetched.";
 		
 		
-		while($row = mysql_fetch_assoc($result)){
+		while($row = mysqli_fetch_assoc($result)){
 			$response[] = $row;			
 		} 
 		
